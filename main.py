@@ -91,3 +91,50 @@ def Send():
     Button(window, text="SEND", width=8, height=1, font='arial 14 bold', bg='#000', fg="#fff", command=start_sending).place(x=330, y=230)
 
     window.mainloop()
+
+def Receive():
+    main = Toplevel(root)
+    main.title("Receive")
+    main.geometry('450x560+500+200')
+    main.configure(bg="#f4fdfe")
+    main.resizable(False, False)
+
+    def receiver():
+        ID = SenderID.get()
+        filename1 = incoming_file.get()
+
+        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        s.connect((ID, 8080))
+        with open("received_encrypted_file", 'wb') as file:
+            while True:
+                file_data = s.recv(1024)
+                if not file_data:
+                    break
+                file.write(file_data)
+        s.close()
+
+        decrypt_file("received_encrypted_file", filename1, "private_keys/private_key.pem")
+        print("File has been received and decrypted successfully!")
+
+    def start_receiving():
+        threading.Thread(target=receiver).start()
+
+    def decrypt_file(encrypted_file, output_file, private_key_path):
+        with open(private_key_path, "rb") as key_file:
+            private_key = serialization.load_pem_private_key(key_file.read(), password=None)
+
+        with open(encrypted_file, "rb") as f:
+            encrypted_data = f.read()
+
+        # Extract hash and encrypted data
+        file_hash = encrypted_data[:32]  # SHA-256 hash is 32 bytes
+        encrypted_data = encrypted_data[32:]
+
+        decrypted_data = private_key.decrypt(
+            encrypted_data,
+            padding.OAEP(
+                mgf=padding.MGF1(algorithm=hashes.SHA256()),
+                algorithm=hashes.SHA256(),
+                label=None
+            )
+        )
