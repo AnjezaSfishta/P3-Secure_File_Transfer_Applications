@@ -13,13 +13,13 @@ This is a simple application built using Python and Tkinter GUI toolkit, designe
 
 ## Usage
 
-### Send Files:
+#### Send Files:
 
 1. Click on the "Send" button.
 2. Select the file you want to send.
 3. Click on the "SEND" button to initiate the transfer.
 
-### Receive Files:
+#### Receive Files:
 
 1. Click on the "Receive" button.
 2. Enter the sender's ID (IP address) and the filename for the incoming file.
