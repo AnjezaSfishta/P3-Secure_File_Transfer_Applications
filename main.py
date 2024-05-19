@@ -85,7 +85,7 @@ def Send():
 
     host = socket.gethostname()
     ip = socket.gethostbyname(host)
-    Label(window, text=f'ID: {ip}', bg='white', fg='black').place(x=160, y=340)
+    Label(window, text=f'ID: {ip}', bg='white', fg='black').place(x=182, y=339)
 
     Button(window, text="+ select file", width=10, height=1, font='arial 14 bold', bg="#fff", fg="#000", command=select_file).place(x=190, y=230)
     Button(window, text="SEND", width=8, height=1, font='arial 14 bold', bg='#000', fg="#fff", command=start_sending).place(x=330, y=230)
@@ -138,3 +138,26 @@ def Receive():
                 label=None
             )
         )
+
+        # Compute hash of the decrypted data
+        hasher = hashes.Hash(hashes.SHA256())
+        hasher.update(decrypted_data)
+        computed_hash = hasher.finalize()
+
+        if file_hash != computed_hash:
+            print("Integrity check failed: The file has been tampered with or corrupted.")
+            return
+
+        with open(output_file, "wb") as f:
+            f.write(decrypted_data)
+
+    image_icon1 = PhotoImage(file="Image/receive.png")
+    main.iconphoto(False, image_icon1)
+
+    Hbackground = PhotoImage(file="Image/receiver.png").subsample(2)
+    Label(main, image=Hbackground, bd=0).place(x=0, y=0, relwidth=1)
+
+    logo = PhotoImage(file='Image/profile.png').subsample(8)
+    Label(main, image=logo, bg="#f4fdfe").place(x=30, y=200)
+
+    Label(main, text="Receive", font=('arial', 20), bg="#f4fdfe").place(x=100, y=218)
