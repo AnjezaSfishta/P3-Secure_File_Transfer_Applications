@@ -161,3 +161,22 @@ def Receive():
     Label(main, image=logo, bg="#f4fdfe").place(x=30, y=200)
 
     Label(main, text="Receive", font=('arial', 20), bg="#f4fdfe").place(x=100, y=218)
+
+    Label(main, text="Input sender id", font=('arial', 10, 'bold'), bg="#f4fdfe").place(x=35, y=280)
+    SenderID = Entry(main, width=25, fg="black", border=2, bg='white', font=('arial', 15))
+    SenderID.place(x=35, y=310)
+    SenderID.focus()
+
+    Label(main, text="Filename for the incoming file:", font=('arial', 10, 'bold'), bg="#f4fdfe").place(x=35, y=360)
+    incoming_file = Entry(main, width=25, fg="black", border=2, bg='white', font=('arial', 15))
+    incoming_file.place(x=35, y=390)
+
+    imageicon = PhotoImage(file="Image/arrow.png").subsample(15)
+    rr = Button(main, text="Receive", compound=LEFT, image=imageicon, width=130, bg="#39c790", font="arial 14 bold", command=start_receiving)
+    rr.place(x=35, y=430)
+
+    main.mainloop()
+
+image_icon = PhotoImage(file="Image/icon.png")
+root.iconphoto(False, image_icon)
+
